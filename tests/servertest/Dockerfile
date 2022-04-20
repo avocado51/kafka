@@ -36,7 +36,14 @@ RUN apk add --no-cache bash curl jq docker \
  && apk add --no-cache --allow-untrusted glibc-${GLIBC_VERSION}.apk \
  && rm glibc-${GLIBC_VERSION}.apk
 
+RUN echo "ssl.keystore.location=/opt/secure/kafka.docker.keystore.jks" >> /opt/kafka/config/server.properties && \
+ echo "ssl.keystore.password=QC1234" >> /opt/kafka/config/server.properties && \
+ echo "ssl.truststore.location=/opt/secure/kafka.docker.truststore.jks" >> /opt/kafka/config/server.properties && \
+ echo "ssl.truststore.password=QC1234" >> /opt/kafka/config/server.properties && \
+ echo "ssl.key.password=QC1234" >> /opt/kafka/config/server.properties
+
 COPY overrides /opt/overrides
+COPY secure /opt/secure
 
 VOLUME ["/kafka"]
 

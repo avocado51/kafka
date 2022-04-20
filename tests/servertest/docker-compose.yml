@@ -4,6 +4,9 @@ services:
     image: wurstmeister/zookeeper
     ports:
       - "2181:2181"
+    environment:
+       ZOOKEEPER_INIT_LIMIT: 5
+       ZOOKEEPER_SYNC_LIMIT: 2
     restart: unless-stopped
 
   kafka:
@@ -12,8 +15,19 @@ services:
       - "9092"
     environment:
       DOCKER_API_VERSION: 1.22
-      KAFKA_ADVERTISED_HOST_NAME: 192.168.10.160
+      KAFKA_ADVERTISED_HOST_NAME: 192.168.10.101
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      PORT_COMMAND: "docker port $$(hostname) 9092/tcp | cut -d: -f2"
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: SSL:SSL
+      KAFKA_LISTENERS: SSL://0.0.0.0:9092
+      KAFKA_ADVERTISED_LISTENERS: SSL://192.168.10.101:_{PORT_COMMAND}
+      #KAFKA_INTER_BROKER_LISTENER_NAME: SSL
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
+      KAFKA_SECURITY_PROTOCOL: SSL
+      KAFKA_SECURITY_INTER_BROKER_PROTOCOL: SSL
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      #KAFKA_CREATE_TOPICS: "test-topic:1:1"
+      KAFKA_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM: " "
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     restart: unless-stopped
