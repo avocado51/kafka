@@ -23,14 +23,14 @@ $ docker exec -it [kafka_container] bin/bash
 - test kafka producer and consumer
 
 ```
-$ kafka-topics.sh --list --bootstrap-server 192.168.10.160:9092
+$ kafka-topics.sh --list --bootstrap-server {public ip}:{PORT_COMMAND}
 
 // create topic
-$ bin/kafka-topics.sh --create --bootstrap-server 192.168.10.160:49162,192.168.10.160:49163 --replication-factor 2 --partitions 5 --topic test_topic
+$ bin/kafka-topics.sh --create --bootstrap-server {public ip}:{PORT_COMMAND} --replication-factor 2 --partitions 5 --topic {TOPIC NAME}
 
 // start producer request message
-$ kafka-console-producer.sh --broker-list 192.168.10.160:49162 --topic test_topic
+$ kafka-console-producer.sh --broker-list {public ip}:{PORT_COMMAND} --topic {TOPIC NAME}
 
 // start consumer (* test in another console *)
-$ kafka-console-consumer.sh --bootstrap-server 192.168.10.160:49162 --topic test_topic --from-beginning
+$ kafka-console-consumer.sh --bootstrap-server {public ip}:{PORT_COMMAND} --topic {TOPIC NAME} --from-beginning
 ```
